@@ -269,6 +269,7 @@ class CommandRootState {
 	}
 
 	#filterItems() {
+		console.log("filtering!!");
 		if (!this._commandState.search || this.shouldFilter.current === false) {
 			this._commandState.filtered.count = this.allItems.size;
 			return;
@@ -282,7 +283,9 @@ class CommandRootState {
 		for (const id of this.allItems) {
 			const value = this.allIds.get(id)?.value ?? "";
 			const keywords = this.allIds.get(id)?.keywords ?? [];
+			console.log(`${id} value: `, value);
 			const rank = this.#score(value, keywords);
+			console.log(`${id} rank: `, rank);
 			this._commandState.filtered.items.set(id, rank);
 			if (rank > 0) itemCount++;
 		}
@@ -298,6 +301,8 @@ class CommandRootState {
 				}
 			}
 		}
+
+		console.log("[#filtered] root filtered: ", this._commandState.filtered.items);
 
 		this._commandState.filtered.count = itemCount;
 	}
@@ -822,6 +827,8 @@ class CommandItemState {
 			return true;
 		}
 		const currentScore = this.root.commandState.filtered.items.get(this.id.current);
+		console.log("filtered items: ", this.root.commandState.filtered.items);
+		console.log(`${this.id.current} score: `, currentScore);
 		if (currentScore === undefined) return false;
 		return currentScore > 0;
 	});
@@ -860,18 +867,23 @@ class CommandItemState {
 		$effect(() => {
 			const value = this.#value.current;
 			const node = this.#ref.current;
-			if (!node) return;
-			if (!value && node.textContent) {
+
+			console.log(node)
+			console.log(this.id.current)
+
+			if (!value && node && node.textContent) {
 				this.trueValue = node.textContent.trim();
 			}
 
 			untrack(() => {
 				this.root.registerValue(
 					this.id.current,
-					this.trueValue,
+					node ? this.trueValue : value.trim(),
 					props.keywords.current.map((keyword) => keyword.trim())
 				);
-				node.setAttribute(VALUE_ATTR, this.trueValue);
+				if (node) {
+					node.setAttribute(VALUE_ATTR, this.trueValue);
+				}
 			});
 		});
 

@@ -4,6 +4,7 @@
 	import { CommandGroupContainerContext, useCommandItem } from "../command.svelte.js";
 	import { noop } from "$lib/internal/noop.js";
 	import { useId } from "$lib/internal/use-id.js";
+	import { onMount } from "svelte";
 
 	let {
 		id = useId(),
@@ -35,6 +36,10 @@
 	});
 
 	const mergedProps = $derived(mergeProps(restProps, itemState.props));
+
+	onMount(() => {
+		console.log(`mounted: ${value} shouldRender: ${itemState.shouldRender}`);
+	});
 </script>
 
 {#key itemState.root.key}
