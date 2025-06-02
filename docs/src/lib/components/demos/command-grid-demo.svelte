@@ -4,6 +4,7 @@
 	type Emoji = {
 		char: string;
 		keywords: string[];
+		disabled?: boolean;
 	};
 
 	type EmojiGroup = {
@@ -16,7 +17,7 @@
 			name: "Pinned",
 			emojis: [
 				{ char: "🤷‍♂️", keywords: ["shrug"] },
-				{ char: "✅", keywords: ["check", "mark"] },
+				{ char: "✅", keywords: ["check", "mark"], disabled: true }, // disabled
 				{ char: "🎉", keywords: ["party"] },
 			],
 		},
@@ -24,12 +25,12 @@
 			name: "Frequently Used",
 			emojis: [
 				{ char: "¢", keywords: ["cent", "currency"] },
-				{ char: "📦", keywords: ["box", "cardboard", "shipping"] },
+				{ char: "📦", keywords: ["box", "cardboard", "shipping"], disabled: true }, // disabled
 				{ char: "🛜", keywords: ["wifi"] },
 				{ char: "🔥", keywords: ["fire", "hot"] },
 				{ char: "⭐", keywords: ["star", "favorite"] },
 				{ char: "👍", keywords: ["thumbs up", "like", "approve"] },
-				{ char: "🚀", keywords: ["rocket", "launch"] },
+				{ char: "🚀", keywords: ["rocket", "launch"], disabled: true }, // disabled
 				{ char: "👏", keywords: ["clap", "applause"] },
 			],
 		},
@@ -40,7 +41,7 @@
 				{ char: "❤️", keywords: ["heart", "love"] },
 				{ char: "👀", keywords: ["eyes", "look", "see"] },
 				{ char: "💡", keywords: ["lightbulb", "idea"] },
-				{ char: "☕", keywords: ["coffee", "drink", "break"] },
+				{ char: "☕", keywords: ["coffee", "drink", "break"], disabled: true }, // disabled
 				{ char: "💻", keywords: ["computer", "laptop", "work"] },
 				{ char: "✏️", keywords: ["pencil", "edit", "write"] },
 				{ char: "📅", keywords: ["calendar", "date", "schedule"] },
@@ -57,7 +58,7 @@
 				{ char: "🎆", keywords: ["fireworks", "celebration", "festival"] },
 				{ char: "🎈", keywords: ["balloon", "party", "birthday"] },
 				{ char: "🍪", keywords: ["cookie", "snack", "dessert"] },
-				{ char: "🍕", keywords: ["pizza", "food", "slice"] },
+				{ char: "🍕", keywords: ["pizza", "food", "slice"], disabled: true }, // disabled
 				{ char: "🍦", keywords: ["ice cream", "dessert", "sweet"] },
 				{ char: "🍎", keywords: ["apple", "fruit", "food"] },
 				{ char: "🍌", keywords: ["banana", "fruit", "yellow"] },
@@ -80,7 +81,7 @@
 				{ char: "😉", keywords: ["wink", "flirt", "smile"] },
 				{ char: "🤓", keywords: ["nerd", "geek", "glasses"] },
 				{ char: "🤖", keywords: ["robot", "ai", "machine"] },
-				{ char: "👻", keywords: ["ghost", "spooky", "halloween"] },
+				{ char: "👻", keywords: ["ghost", "spooky", "halloween"], disabled: true }, // disabled
 				{ char: "👽", keywords: ["alien", "space", "ufo"] },
 			],
 		},
@@ -110,8 +111,9 @@
 					<Command.GroupItems class="grid grid-cols-8 gap-2 px-2">
 						{#each group.emojis as emoji (emoji)}
 							<Command.Item
-								class="rounded-button bg-muted data-selected:ring-foreground outline-hidden flex aspect-square size-full cursor-pointer select-none items-center justify-center text-2xl ring-2 ring-transparent"
+								class="rounded-button bg-muted data-selected:ring-foreground outline-hidden flex aspect-square size-full aria-disabled:cursor-not-allowed aria-disabled:opacity-50 cursor-pointer select-none items-center justify-center text-2xl ring-2 ring-transparent"
 								keywords={emoji.keywords}
+								disabled={emoji.disabled}
 							>
 								{emoji.char}
 							</Command.Item>

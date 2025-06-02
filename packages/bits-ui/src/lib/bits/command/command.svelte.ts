@@ -333,6 +333,21 @@ class CommandRootState {
 	}
 
 	/**
+	 * Gets all visible command items.
+	 *
+	 * @returns Array of visible item elements
+	 * @remarks Exposed for direct item access and bound checking
+	 */
+	getVisibleItems(): HTMLElement[] {
+		const node = this.opts.ref.current;
+		if (!node) return [];
+		const visibleItems = Array.from(
+			node.querySelectorAll<HTMLElement>(COMMAND_ITEM_SELECTOR)
+		).filter((el): el is HTMLElement => !!el);
+		return visibleItems;
+	}
+
+	/**
 	 * Gets currently selected command item.
 	 *
 	 * @returns Selected element or undefined
@@ -393,7 +408,7 @@ class CommandRootState {
 
 	#itemIsFirstRowOfGroup(item: HTMLElement) {
 		const columns = this.opts.columns.current ?? 1;
-		const items = this.getValidItems();
+		const items = this.getVisibleItems();
 		const index = items.findIndex((i) => i === item);
 		const group = item.getAttribute("data-group");
 
@@ -648,7 +663,7 @@ class CommandRootState {
 		const selected = this.#getSelectedItem();
 		const group = selected?.closest(COMMAND_GROUP_SELECTOR);
 		const groupValue = group?.getAttribute("data-value");
-		const items = this.getValidItems();
+		const items = this.getVisibleItems();
 		const index = items.findIndex((item) => item === selected);
 
 		if (!group || !groupValue) {
@@ -675,7 +690,7 @@ class CommandRootState {
 
 		const selected = this.#getSelectedItem();
 		const group = selected?.closest(COMMAND_GROUP_SELECTOR);
-		const items = this.getValidItems();
+		const items = this.getVisibleItems();
 		const index = items.findIndex((item) => item === selected);
 
 		let currentColumn = column;
@@ -747,7 +762,7 @@ class CommandRootState {
 
 		const selected = this.#getSelectedItem();
 		const group = selected?.closest(COMMAND_GROUP_SELECTOR);
-		const items = this.getValidItems();
+		const items = this.getVisibleItems();
 		const index = items.findIndex((item) => item === selected);
 
 		let groupEnd: number | null = null;
