@@ -4,7 +4,7 @@ description: A command menu component that enables users to search, filter, and 
 ---
 
 <script>
-	import { APISection, ComponentPreview, CommandDemo, CommandDemoGrid, CommandDemoDialog, Callout } from '$lib/components/index.js'
+	import { APISection, ComponentPreview, CommandDemo, CommandDemoGrid, CommandDemoDialog, Callout, CommandDemoLargeList } from '$lib/components/index.js'
 	let { schemas } = $props()
 </script>
 
@@ -370,5 +370,19 @@ A common pattern is to postfix the `value` with something unique, like an ID or 
 <Command.Item value="my item 1">My Item</Command.Item>
 <Command.Item value="my item 2">My Item</Command.Item>
 ```
+
+## Large List Performance
+
+The command component is already optimized for large lists.
+
+<br>
+
+<ComponentPreview name="command-demo-large-list" componentName="Command" size="xs">
+
+{#snippet preview()}
+<CommandDemoLargeList />
+{/snippet}
+
+</ComponentPreview>
 
 <APISection {schemas} />
